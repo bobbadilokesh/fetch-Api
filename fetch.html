@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fitch api</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: aliceblue;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            background-image: url("imgg3.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        h1 {
+            text-transform: capitalize;
+            font-size: 40px;
+            color: rgb(230, 237, 239);
+
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px;
+            text-transform: capitalize;
+            background-color: blue;
+            color: whitesmoke;
+            box-shadow: 0 4 15px solid black;
+        }
+
+        button:hover {
+            background-color: rgb(56, 39, 153);
+        }
+
+        .container {
+            max-width: 100%;
+            border: 6px;
+            text-transform: uppercase;
+            margin: 20px;
+            box-shadow: 0 4 15px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+            background-color: rgb(236, 236, 222);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 2px solid black;
+            border-radius: 5px;
+            text-align: left;
+            padding: 12px;
+        }
+
+        th {
+            background-color: blue;
+            color: white;
+
+        }
+
+        tr:hover {
+            background-color: aliceblue;
+        }
+
+        
+
+        /* resspnsive */
+        @media (max-width:600px) {
+            body {
+                padding: 10px;
+
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+                border: 4px solid black;
+            }
+        }
+
+        @media (max-width:450px) {
+            table {
+                font-size: 10px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <h1><span> tabular format </span></h1>
+    <button id="btn">get jokes 😂</button>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>type</th>
+                    <th>setup</th>
+                    <th>punchline</th>
+                </tr>
+            </thead>
+            <tbody id="tablebody">
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        const tablebody = document.getElementById("tablebody");
+        const btn = document.getElementById("btn");
+
+        async function fetchApi() {
+            try {
+                const res = await fetch("https://official-joke-api.appspot.com/jokes/ten");
+                const data = await res.json();
+                tablebody.innerHTML = "";
+                const apiUrl = "https://api.allorigins.win/raw?url=https://official-joke-api.appspot.com/jokes/ten";
+                data.forEach(element => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${element.id}</td>
+                        <td>${element.type}</td>
+                        <td>${element.setup}</td>
+                        <td>${element.punchline}</td>
+                    `;
+
+                    tablebody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Failed to fetch jokes:", error);
+                tablebody.innerHTML = "<tr><td colspan='4'>Failed</td></tr>";
+            }
+        }
+        fetchApi()
+        btn.addEventListener("click", fetchApi);
+    </script>
+</body>
+
+</html>
